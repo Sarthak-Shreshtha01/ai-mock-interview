@@ -16,7 +16,7 @@ import { UserAnswer } from '@/utils/schema';
 
 const RecordAnswerSection = ({mockInterviewQuestion ,activeQuestionIndex ,interviewData }) => {
 
-  const user = useUser();
+  const {user} = useUser();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -24,6 +24,7 @@ const RecordAnswerSection = ({mockInterviewQuestion ,activeQuestionIndex ,interv
     interimResult,
     isRecording,
     results,
+    setResults,
     startSpeechToText,
     stopSpeechToText,
   } = useSpeechToText({
@@ -79,14 +80,17 @@ const RecordAnswerSection = ({mockInterviewQuestion ,activeQuestionIndex ,interv
       userAnswer: userAnswer,
       feedback : JsonFeedbackResp?.feedback,
       rating : JsonFeedbackResp?.rating,
-      userEmail : user?.primaryEmailAddress,
+      userEmail : user?.primaryEmailAddress?.emailAddress,
       createdAt:moment().format('DD-MM-YYYY'),
     });
 
     if(resp){
       toast('User Answer recorded Successfully');
+      setUserAnswer('');
+      setResults([]);
     }
-    setUserAnswer('');
+    setResults([]);
+
     setLoading(false);
   }
 
